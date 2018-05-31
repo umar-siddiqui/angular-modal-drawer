@@ -1,0 +1,23 @@
+{
+  "name": "angular-modal-drawer",
+  "authors": [
+    "Umar Siddiqui"
+  ],
+  "description": "modal popup which animates like a slide in slide out drawer",
+  "main": "dist/angular-modal-drawer.js",
+  "keywords": [
+    "modal",
+    "drawer",
+    "popup",
+    "slidenav"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

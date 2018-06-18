@@ -9,7 +9,16 @@
       '$templateCache',
       '$http',
       '$injector',
-      function($q) {
+      '$rootScope',
+      '$document',
+      '$compile',
+      function($q,
+               $templateCache,
+               $http,
+               $injector,
+               $rootScope,
+               $document,
+               $compile) {
         function open() {
           var element = document.getElementById("modalDrawerPopup")
           element.classList.add("in");
@@ -39,16 +48,6 @@
           });
           return promisesArr;
         }
-
-        modalDrawer.open({
-          resolve: {
-            z: function() {
-              return $scope.qwerty;
-            }
-          },
-          template: 'zz',
-          templateUrl: '<path>'
-        })
 
         this.open = function(modalOptions) {
 
@@ -135,7 +134,9 @@
         }
 
         // this.open = open;
-        // this.close = close;
+        this.close = function(){
+          close();
+        }
       }
     ])
 

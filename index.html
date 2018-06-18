@@ -24,10 +24,22 @@
         .config(['$routeProvider',
           function($routeProvider) {}
         ])
-        .controller('RootCtrl', function($scope, modalDrawer) {
-          $scope.open = modalDrawer.open
-          $scope.close = modalDrawer.close
-        });
+        .controller('RootCtrl', ['$scope', 'modalDrawer', function($scope, modalDrawer) {
+
+          $scope.open = function(){
+            modalDrawer.open({
+              resolve: {
+                z: function() {
+                  return $scope.qwerty;
+                }
+              },
+              template: 'zz',
+              templateUrl: '<path>'
+            });
+          }
+          $scope.close = modalDrawer.close;
+
+        }]);
 
     })();
   </script>

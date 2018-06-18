@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Angular Modal Drawer</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width" />
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet">
+  <link href="dist/angular-modal-drawer.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+  <script src="https://code.angularjs.org/1.2.15/angular-route.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+
+  <script src="dist/angular-modal-drawer.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+
+      angular.module('app', ['ngModalDrawer', 'ui.bootstrap', 'ngRoute'])
+        .config(['$routeProvider',
+          function($routeProvider) {}
+        ])
+        .controller('RootCtrl', function($scope, modalDrawer) {
+          $scope.open = modalDrawer.open
+          $scope.close = modalDrawer.close
+        });
+
+    })();
+  </script>
+</head>
+
+<body ng-app="app">
+  <div ng-controller="RootCtrl" class="container">
+    <h2 ng-click="open()">Open</h2>
+
+    <div id="mySidenav" class="sidenav">
+      <h2 ng-click="close()">Close</h2>
+    </div>
+    <div id="modalDrawerPopup" class="sidenav">
+      <h2 ng-click="close()">Close</h2>
+    </div>
+
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+    <h2 ng-click="open()">Open</h2>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 100px;
+  right: 0;
+  background-color:rgba(112, 112, 112, 0.3);
+  overflow-x: hidden;
+  transition: 0.5s;
+  box-shadow: -1px -1px 1px rgba(112, 112, 112, 0.5);
+}
+.sidenav.in {
+  width: 650px
+}
+.sidenav.out {
+  width: 0;
+}

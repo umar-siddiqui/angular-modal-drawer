@@ -4,7 +4,7 @@
   angular.module('ngModalDrawer', [])
 
   angular.module('ngModalDrawer')
-    .service('modalDrawer', [
+    .service('$modalDrawer', [
       '$q',
       '$templateCache',
       '$http',
@@ -31,7 +31,7 @@
           element.classList.remove("out");
         }
 
-        // add close panel clas
+        // add close panel class
         function close(modalResultDeferred, options) {
           var element = document.getElementById("modalDrawerPopup")
           element.classList.add("out");
@@ -52,11 +52,25 @@
 
         // get template as a promise
         function getTemplatePromise(options) {
-          return options.template ? $q.when(options.template) :
-            $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl, // what is this ?
-              {cache: $templateCache}).then(function (result) {
-                return result.data;
+          if(options.template) return $q.when(options.template);
+
+          var templateUrl = options.templateUrl;; 
+          if(templateUrl && angular.isFunction(templateUrl)){
+            templateUrl = (templateUrl)();
+          } 
+
+          var getHtml = $templateCache.get(templateUrl);
+          if(!getHtml){
+            getHtml = $http.get(templateUrl);
+
+            return $q.when(getHtml).then(function(result){
+              return result.data;
             });
+          } 
+
+          return $q.when(getHtml).then(function(result){
+            return result;
+          });
         }
 
         function getResolvePromises(resolves) {
@@ -87,7 +101,6 @@
           };
 
           //merge and clean up options
-          // modalOptions = angular.extend({}, $modalProvider.options, modalOptions);
           modalOptions.resolve = modalOptions.resolve || {};
 
           //verify options
@@ -165,25 +178,10 @@
           }
 
           // this is for making in transition work on first click
-          $timeout(open, 0);
+          $timeout(open);
         }
 
       }
     ])
-
-
-  // angular.module('ngModalDrawer')
-  //   .directive('popDrawer', [
-  //     'modalDrawer',
-  //     function() {
-  //       return {
-  //         restrict: 'EA',
-  //         link: function() {
-
-  //         }
-  //       }
-  //     }
-  //   ])
-
 
 })();

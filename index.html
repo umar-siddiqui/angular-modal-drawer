@@ -26,20 +26,46 @@
         ])
         .controller('RootCtrl', ['$scope', 'modalDrawer', function($scope, modalDrawer) {
 
-          $scope.open = function(){
-            modalDrawer.open({
+          $scope.qwerty = "ooh lalalala";
+
+          $scope.open = function(param){
+            $scope.popUp = modalDrawer.open({
               resolve: {
                 z: function() {
                   return $scope.qwerty;
+                },
+                param: function(){
+                  return param;
                 }
               },
-              template: 'zz',
-              templateUrl: '<path>'
+              templateUrl: 'foo.html',
+              controller: 'PopupCtrl'
             });
+
+            $scope.popUp.result.then(function(){
+              console.log("closed!")
+            }, function(){
+              console.log("failed :/")
+            })
+
+            $scope.popUp.opened.then(function(){
+              console.log("opened!")
+            }, function(){
+              console.log("not opened :/")
+            })
+
           }
-          $scope.close = modalDrawer.close;
+
+
+
 
         }]);
+
+      angular.module('app').controller('PopupCtrl', ['$scope', 'modalDrawer', 'z', 'param', function($scope, modalDrawer, z, param){
+        $scope.param = param;
+        $scope.foo = "foooooooo";
+        console.log("z: ", z);
+      }])
 
     })();
   </script>
@@ -47,16 +73,9 @@
 
 <body ng-app="app">
   <div ng-controller="RootCtrl" class="container">
-    <h2 ng-click="open()">Open</h2>
-
-    <div id="mySidenav" class="sidenav">
-      <h2 ng-click="close()">Close</h2>
-    </div>
-    <div id="modalDrawerPopup" class="sidenav">
-      <h2 ng-click="close()">Close</h2>
-    </div>
-
-    <h2 ng-click="open()">Open</h2>
+    <!-- <div id="modalDrawerPopup" class="sidenav"></div> -->
+    <h2 ng-click="open('hello')">Open</h2>
+    <h2 ng-click="open('is there')">Open</h2>
     <h2 ng-click="open()">Open</h2>
     <h2 ng-click="open()">Open</h2>
     <h2 ng-click="open()">Open</h2>

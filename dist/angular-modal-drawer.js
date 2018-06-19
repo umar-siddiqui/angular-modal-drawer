@@ -12,28 +12,48 @@
       '$rootScope',
       '$document',
       '$compile',
+      '$controller',
+      '$timeout',
       function($q,
                $templateCache,
                $http,
                $injector,
                $rootScope,
                $document,
-               $compile) {
+               $compile,
+               $controller,
+               $timeout) {
+
+        // add open panel class
         function open() {
           var element = document.getElementById("modalDrawerPopup")
           element.classList.add("in");
           element.classList.remove("out");
         }
 
-        function close() {
+        // add close panel clas
+        function close(modalResultDeferred, options) {
           var element = document.getElementById("modalDrawerPopup")
           element.classList.add("out");
           element.classList.remove("in");
+
+          if(options.resolve){
+            modalResultDeferred.resolve(true);
+          } else {
+            modalResultDeferred.reject(false);
+          }
+
         }
 
+        // add dismiss
+        function dismiss(modalResultDeferred) {
+          close(modalResultDeferred, {resolve: false});
+        }
+
+        // get template as a promise
         function getTemplatePromise(options) {
           return options.template ? $q.when(options.template) :
-            $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
+            $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl, // what is this ?
               {cache: $templateCache}).then(function (result) {
                 return result.data;
             });
@@ -59,7 +79,10 @@
             result: modalResultDeferred.promise,
             opened: modalOpenedDeferred.promise,
             close: function(result) {
-              close()
+              close(modalResultDeferred, {resolve: true})
+            },
+            dismiss: function(){
+              dismiss(modalResultDeferred)
             }
           };
 
@@ -77,10 +100,9 @@
 
 
           templateAndResolvePromise.then(function resolveSuccess(tplAndVars) {
-
             var modalScope = (modalOptions.scope || $rootScope).$new();
             modalScope.$close = modalInstance.close;
-            // modalScope.$dismiss = modalInstance.dismiss;
+            modalScope.$dismiss = modalInstance.dismiss;
 
             var ctrlInstance, ctrlLocals = {};
             var resolveIter = 1;
@@ -120,39 +142,48 @@
 
 
         function createModalDOM(modalInstance, modal) {
-
           var body = $document.find('body').eq(0)
 
-          var angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav"></div>');
-          angularDomEl.html(modal.content);
+          // check if element already exists
+          var element = document.getElementById('modalDrawerPopup');
 
-          var modalDomEl = $compile(angularDomEl)(modal.scope);
-          // openedWindows.top().value.modalDomEl = modalDomEl;
-          body.append(modalDomEl);
-          // body.addClass(OPENED_MODAL_CLASS);
-          open()
-        }
-
-        // this.open = open;
-        this.close = function(){
-          close();
-        }
-      }
-    ])
-
-
-  angular.module('ngModalDrawer')
-    .directive('popDrawer', [
-      'modalDrawer',
-      function() {
-        return {
-          restrict: 'EA',
-          link: function() {
-
+          // use existing modalDrawerPopup if it exists
+          if(element){
+            var angularDomEl = angular.element(element);
           }
+          // create a new element otherwise
+          else {
+            angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav"></div>');
+          }
+
+          angularDomEl.html(modal.content);
+          var modalDomEl = $compile(angularDomEl)(modal.scope);
+
+          // append newly created element
+          if(!element){
+            body.append(modalDomEl);
+          }
+
+          // this is for making in transition work on first click
+          $timeout(open, 0);
         }
+
       }
     ])
+
+
+  // angular.module('ngModalDrawer')
+  //   .directive('popDrawer', [
+  //     'modalDrawer',
+  //     function() {
+  //       return {
+  //         restrict: 'EA',
+  //         link: function() {
+
+  //         }
+  //       }
+  //     }
+  //   ])
 
 
 })();

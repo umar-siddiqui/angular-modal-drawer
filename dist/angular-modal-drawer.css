@@ -17,3 +17,15 @@
 .sidenav.out {
   width: 0;
 }
+
+#modalDrawerPopupContent {
+  transition: 0.3s;
+}
+
+#modalDrawerPopupContent.in {
+  opacity: 1;
+}
+
+#modalDrawerPopupContent.out {
+  opacity: 0;
+}

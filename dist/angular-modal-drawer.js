@@ -26,16 +26,22 @@
 
         // add open panel class
         function open() {
-          var element = document.getElementById("modalDrawerPopup")
+          var element = document.getElementById("modalDrawerPopup");
+          var content = document.getElementById("modalDrawerPopupContent");
           element.classList.add("in");
+          content.classList.add("in");
           element.classList.remove("out");
+          content.classList.remove("out");
         }
 
         // add close panel class
         function close(modalResultDeferred, options, result) {
-          var element = document.getElementById("modalDrawerPopup")
+          var element = document.getElementById("modalDrawerPopup");
+          var content = document.getElementById("modalDrawerPopupContent");
           element.classList.add("out");
+          content.classList.add("out");
           element.classList.remove("in");
+          content.classList.remove("in");
 
           if(options.resolve){
             modalResultDeferred.resolve(result);
@@ -167,10 +173,11 @@
           // create a new element otherwise
           else {
             angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav"></div>');
+            angularDomEl.html('<div id="modalDrawerPopupContent"></div>')
 
           }
 
-          angularDomEl.html(modal.content);
+          angularDomEl.children().first().html(modal.content);
           var modalDomEl = $compile(angularDomEl)(modal.scope);
 
           // append newly created element

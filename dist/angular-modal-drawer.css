@@ -3,16 +3,16 @@
   width: 0;
   position: fixed;
   z-index: 1;
-  top: 100px;
+  top: 65px;
   right: 0;
-  background-color:rgba(112, 112, 112, 0.3);
+  background-color: rgba(253, 253, 255, 0.9);
   overflow-x: hidden;
   transition: 0.7s;
-  box-shadow: -1px -1px 1px rgba(112, 112, 112, 0.5);
+  box-shadow: -1px -1px 1px rgba(112, 112, 112, 0.3);
 }
 
 .sidenav.in {
-  width: 650px;
+  width: 50%;
 }
 .sidenav.out {
   width: 0;

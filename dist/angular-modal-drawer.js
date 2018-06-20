@@ -32,32 +32,32 @@
         }
 
         // add close panel class
-        function close(modalResultDeferred, options) {
+        function close(modalResultDeferred, options, result) {
           var element = document.getElementById("modalDrawerPopup")
           element.classList.add("out");
           element.classList.remove("in");
 
           if(options.resolve){
-            modalResultDeferred.resolve(true);
+            modalResultDeferred.resolve(result);
           } else {
-            modalResultDeferred.reject(false);
+            modalResultDeferred.reject(result);
           }
 
         }
 
         // add dismiss
-        function dismiss(modalResultDeferred) {
-          close(modalResultDeferred, {resolve: false});
+        function dismiss(modalResultDeferred, reason) {
+          close(modalResultDeferred, {resolve: false}, reason);
         }
 
         // get template as a promise
         function getTemplatePromise(options) {
           if(options.template) return $q.when(options.template);
 
-          var templateUrl = options.templateUrl;; 
+          var templateUrl = options.templateUrl;
           if(templateUrl && angular.isFunction(templateUrl)){
             templateUrl = (templateUrl)();
-          } 
+          }
 
           var getHtml = $templateCache.get(templateUrl);
           if(!getHtml){
@@ -66,7 +66,7 @@
             return $q.when(getHtml).then(function(result){
               return result.data;
             });
-          } 
+          }
 
           return $q.when(getHtml).then(function(result){
             return result;
@@ -93,10 +93,10 @@
             result: modalResultDeferred.promise,
             opened: modalOpenedDeferred.promise,
             close: function(result) {
-              close(modalResultDeferred, {resolve: true})
+              close(modalResultDeferred, {resolve: true}, result)
             },
-            dismiss: function(){
-              dismiss(modalResultDeferred)
+            dismiss: function(reason){
+              dismiss(modalResultDeferred, reason)
             }
           };
 
@@ -167,6 +167,7 @@
           // create a new element otherwise
           else {
             angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav"></div>');
+
           }
 
           angularDomEl.html(modal.content);

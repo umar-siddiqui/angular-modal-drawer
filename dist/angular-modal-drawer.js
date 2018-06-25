@@ -23,15 +23,17 @@
                $compile,
                $controller,
                $timeout) {
-
+        
+        var modalScope; 
+        
         // add open panel class
         function open() {
           var element = document.getElementById("modalDrawerPopup");
           var content = document.getElementById("modalDrawerPopupContent");
-          element.classList.add("in");
-          content.classList.add("in");
           element.classList.remove("out");
-          content.classList.remove("out");
+          element.classList.add("in");
+          content.classList.add("fadeIn");
+          content.classList.remove("fadeOut");
         }
 
         // add close panel class
@@ -39,16 +41,16 @@
           var element = document.getElementById("modalDrawerPopup");
           var content = document.getElementById("modalDrawerPopupContent");
           element.classList.add("out");
-          content.classList.add("out");
+          content.classList.add("fadeOut");
           element.classList.remove("in");
-          content.classList.remove("in");
+          content.classList.remove("fadeIn");
 
           if(options.resolve){
             modalResultDeferred.resolve(result);
           } else {
             modalResultDeferred.reject(result);
           }
-
+          modalScope.$destroy(); 
         }
 
         // add dismiss
@@ -119,7 +121,7 @@
 
 
           templateAndResolvePromise.then(function resolveSuccess(tplAndVars) {
-            var modalScope = (modalOptions.scope || $rootScope).$new();
+            modalScope = (modalOptions.scope || $rootScope).$new();
             modalScope.$close = modalInstance.close;
             modalScope.$dismiss = modalInstance.dismiss;
 
@@ -161,8 +163,7 @@
 
 
         function createModalDOM(modalInstance, modal) {
-          var body = $document.find('body').eq(0)
-
+          var body = $document.find('body').eq(0);
           // check if element already exists
           var element = document.getElementById('modalDrawerPopup');
 
@@ -172,8 +173,8 @@
           }
           // create a new element otherwise
           else {
-            angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav"></div>');
-            angularDomEl.html('<div id="modalDrawerPopupContent"></div>')
+            angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav out"></div>');
+            angularDomEl.html('<div id="modalDrawerPopupContent" class="fadeOut"></div>')
 
           }
 
@@ -185,8 +186,7 @@
             body.append(modalDomEl);
           }
 
-          // this is for making in transition work on first click
-          $timeout(open);
+          open();
         }
 
       }

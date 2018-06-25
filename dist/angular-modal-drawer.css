@@ -7,8 +7,8 @@
   right: 0;
   background-color: rgba(253, 253, 255, 0.9);
   overflow-x: hidden;
-  transition: 0.7s;
-  box-shadow: -1px -1px 1px rgba(112, 112, 112, 0.3);
+  transition: 0.7s width ;
+  box-shadow: -5px -5px 5px rgba(112, 112, 112, 0.23);
 }
 
 .sidenav.in {
@@ -19,13 +19,14 @@
 }
 
 #modalDrawerPopupContent {
-  transition: 0.3s;
+  min-width: 50%; 
 }
 
-#modalDrawerPopupContent.in {
+#modalDrawerPopupContent.fadeIn {
+  transition: 0.7s 0.6s;
   opacity: 1;
 }
 
-#modalDrawerPopupContent.out {
+#modalDrawerPopupContent.fadeOut {
   opacity: 0;
 }

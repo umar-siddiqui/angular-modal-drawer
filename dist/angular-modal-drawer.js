@@ -14,6 +14,7 @@
       '$compile',
       '$controller',
       '$timeout',
+      '$document',
       function($q,
                $templateCache,
                $http,
@@ -25,6 +26,8 @@
                $timeout) {
         
         var modalScope; 
+        var initOptions = {};
+        var clickHandler;
         
         // add open panel class
         function open() {
@@ -34,6 +37,14 @@
           element.classList.add("in");
           content.classList.add("fadeIn");
           content.classList.remove("fadeOut");
+
+          if(initOptions.backdrop){
+            var backdropElem = document.getElementById('angularModalDrawerBackdrop');
+            backdropElem.classList.add('modalBackdrop');
+            if(initOptions.backdropClass){
+              backdropElem.classList.add(initOptions.backdropClass);
+            }
+          }          
         }
 
         // add close panel class
@@ -50,6 +61,18 @@
           } else {
             modalResultDeferred.reject(result);
           }
+
+          if(initOptions.backdrop){
+            var backdropElem = document.getElementById('angularModalDrawerBackdrop');
+            backdropElem.classList.remove('modalBackdrop');
+            if(initOptions.backdropClass){
+              backdropElem.classList.remove(initOptions.backdropClass);
+            }
+          }
+
+          if(initOptions.closeOnClickOutside){
+            $document.unbind('click', clickHandler);
+          }  
           modalScope.$destroy(); 
         }
 
@@ -92,7 +115,7 @@
         }
 
         this.open = function(modalOptions) {
-
+          initOptions = modalOptions;
           var modalResultDeferred = $q.defer();
           var modalOpenedDeferred = $q.defer();
 
@@ -119,7 +142,6 @@
           var templateAndResolvePromise =
             $q.all([getTemplatePromise(modalOptions)].concat(getResolvePromises(modalOptions.resolve)));
 
-
           templateAndResolvePromise.then(function resolveSuccess(tplAndVars) {
             modalScope = (modalOptions.scope || $rootScope).$new();
             modalScope.$close = modalInstance.close;
@@ -127,7 +149,7 @@
 
             var ctrlInstance, ctrlLocals = {};
             var resolveIter = 1;
-
+ 
             //controllers
             if (modalOptions.controller) {
               ctrlLocals.$scope = modalScope;
@@ -148,6 +170,25 @@
               content: tplAndVars[0],
             });
 
+            clickHandler = function(event) {
+              var modalDrawerPopupElem = angular.element(document.getElementById('modalDrawerPopup'));
+              var isClickedElementChildOfPopup = modalDrawerPopupElem
+                                                 .find(event.target)
+                                                 .length > 0;
+
+              if(modalDrawerPopupElem.width() != 0 && !isClickedElementChildOfPopup) {
+                if(!modalScope.$onClickOutsidePanel){
+                  console.error(new Error('$onClickOutsidePanel not defined')); 
+                }
+                modalScope.$onClickOutsidePanel();
+              }
+            }
+
+            // close panel when clicked outside
+            if(modalOptions.closeOnClickOutside){
+              $document.bind('click', clickHandler)
+            }          
+
           }, function resolveError(reason) {
             modalResultDeferred.reject(reason);
           });
@@ -166,15 +207,18 @@
           var body = $document.find('body').eq(0);
           // check if element already exists
           var element = document.getElementById('modalDrawerPopup');
+          var backdropElem = document.getElementById('modalBackdrop');
 
           // use existing modalDrawerPopup if it exists
           if(element){
             var angularDomEl = angular.element(element);
+            var angularBackdropElem = angular.element(backdropElem);
           }
           // create a new element otherwise
           else {
-            angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav out"></div>');
-            angularDomEl.html('<div id="modalDrawerPopupContent" class="fadeOut"></div>')
+            var angularBackdropElem = angular.element('<div id="angularModalDrawerBackdrop"></div>');
+            var angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav out"></div>');
+            angularDomEl.html('<div id="modalDrawerPopupContent" class="fadeOut"></div>');
 
           }
 
@@ -184,6 +228,10 @@
           // append newly created element
           if(!element){
             body.append(modalDomEl);
+          }
+
+          if(!backdropElem){
+            body.append(angularBackdropElem);
           }
 
           open();

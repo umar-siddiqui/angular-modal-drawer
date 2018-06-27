@@ -2,7 +2,7 @@
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 33;
   top: 65px;
   right: 0;
   background-color: rgba(253, 253, 255, 0.9);
@@ -14,8 +14,17 @@
 .sidenav.in {
   width: 50%;
 }
-.sidenav.out {
+.sidenav.out { 
   width: 0;
+}
+
+.modalBackdrop {
+  z-index: 32;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: fixed;
 }
 
 #modalDrawerPopupContent {

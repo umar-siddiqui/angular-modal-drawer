@@ -14,7 +14,7 @@
 .sidenav.in {
   width: 50%;
 }
-.sidenav.out { 
+.sidenav.out {
   width: 0;
 }
 
@@ -27,8 +27,12 @@
   position: fixed;
 }
 
+.modalParentDisableScroll{
+  overflow: hidden;
+}
+
 #modalDrawerPopupContent {
-  min-width: 50%; 
+  min-width: 50%;
 }
 
 #modalDrawerPopupContent.fadeIn {

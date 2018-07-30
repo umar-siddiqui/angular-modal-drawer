@@ -24,11 +24,11 @@
                $compile,
                $controller,
                $timeout) {
-        
-        var modalScope; 
+
+        var modalScope;
         var initOptions = {};
         var clickHandler;
-        
+
         // add open panel class
         function open() {
           var element = document.getElementById("modalDrawerPopup");
@@ -44,7 +44,11 @@
             if(initOptions.backdropClass){
               backdropElem.classList.add(initOptions.backdropClass);
             }
-          }          
+          }
+          if(initOptions.disableBackgroundScroll){
+            var disableParentScrollElem = document.getElementsByTagName("BODY")[0];
+            disableParentScrollElem.classList.add('modalDisableBackgroundScroll');
+          }
         }
 
         // add close panel class
@@ -70,10 +74,15 @@
             }
           }
 
+          if(initOptions.disableBackgroundScroll){
+            var disableParentScrollElem = document.getElementsByTagName("BODY")[0];
+            disableParentScrollElem.classList.remove('modalDisableBackgroundScroll');
+          }
+
           if(initOptions.closeOnClickOutside){
             $document.unbind('click', clickHandler);
-          }  
-          modalScope.$destroy(); 
+          }
+          modalScope.$destroy();
         }
 
         // add dismiss
@@ -149,7 +158,7 @@
 
             var ctrlInstance, ctrlLocals = {};
             var resolveIter = 1;
- 
+
             //controllers
             if (modalOptions.controller) {
               ctrlLocals.$scope = modalScope;
@@ -178,7 +187,7 @@
 
               if(modalDrawerPopupElem.width() != 0 && !isClickedElementChildOfPopup) {
                 if(!modalScope.$onClickOutsidePanel){
-                  console.error(new Error('$onClickOutsidePanel not defined')); 
+                  console.error(new Error('$onClickOutsidePanel not defined'));
                 }
                 modalScope.$onClickOutsidePanel();
               }
@@ -187,7 +196,7 @@
             // close panel when clicked outside
             if(modalOptions.closeOnClickOutside){
               $document.bind('click', clickHandler)
-            }          
+            }
 
           }, function resolveError(reason) {
             modalResultDeferred.reject(reason);

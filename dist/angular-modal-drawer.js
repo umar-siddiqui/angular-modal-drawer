@@ -45,9 +45,9 @@
               backdropElem.classList.add(initOptions.backdropClass);
             }
           }
-          if(initOptions.disableParentScroll){
+          if(initOptions.disableBackgroundScroll){
             var disableParentScrollElem = document.getElementsByTagName("BODY")[0];
-            disableParentScrollElem.classList.add('modalParentDisableScroll');
+            disableParentScrollElem.classList.add('modalDisableBackgroundScroll');
           }
         }
 
@@ -74,9 +74,9 @@
             }
           }
 
-          if(initOptions.disableParentScroll){
+          if(initOptions.disableBackgroundScroll){
             var disableParentScrollElem = document.getElementsByTagName("BODY")[0];
-            disableParentScrollElem.classList.remove('modalParentDisableScroll');
+            disableParentScrollElem.classList.remove('modalDisableBackgroundScroll');
           }
 
           if(initOptions.closeOnClickOutside){

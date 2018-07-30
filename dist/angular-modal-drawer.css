@@ -27,7 +27,7 @@
   position: fixed;
 }
 
-.modalParentDisableScroll{
+.modalDisableBackgroundScroll{
   overflow: hidden;
 }
 

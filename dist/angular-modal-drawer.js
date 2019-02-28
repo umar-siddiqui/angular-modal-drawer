@@ -14,7 +14,6 @@
       '$compile',
       '$controller',
       '$timeout',
-      '$document',
       function($q,
                $templateCache,
                $http,
@@ -234,8 +233,13 @@
             angularDomEl = angular.element('<div id="modalDrawerPopup" class="modalDrawerSidenav out scroll"></div>');
             angularDomEl.html('<div id="modalDrawerPopupContent" class="ml-4 mt-4 mr-4 mb-4 fadeOut"></div>')
           }
-
-          angularDomEl.children().first().html(modal.content);
+          var backLink = '<div class="panelAction">\
+            <i class="material-icons tabularFileUploadPanelCloseChevron"\
+               ng-click="navigateBack()">\
+              chevron_left</i>\
+              <a href="javascript:void(0);" ng-click="navigateBack()">Close Panel</a>\
+          </div>';
+          angularDomEl.children().first().html(backLink + modal.content);
           var modalDomEl = $compile(angularDomEl)(modal.scope);
 
           // append newly created element

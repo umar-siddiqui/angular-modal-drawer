@@ -184,6 +184,10 @@
               content: tplAndVars[0],
             });
 
+          }, function resolveError(reason) {
+            modalResultDeferred.reject(reason);
+          });
+
           clickHandler = function(event) {
             var modalDrawerPopupElem = angular.element(document.getElementById('modalDrawerPopup'));
             var isClickedElementChildOfPopup = modalDrawerPopupElem

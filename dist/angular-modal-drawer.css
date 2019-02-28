@@ -1,34 +1,21 @@
-.sidenav {
+.modalDrawerSidenav {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 33;
+  z-index: 1;
   top: 65px;
   right: 0;
-  background-color: rgba(253, 253, 255, 0.9);
+  background-color: rgb(253, 253, 255);
   overflow-x: hidden;
   transition: 0.7s width ;
   box-shadow: -5px -5px 5px rgba(112, 112, 112, 0.23);
 }
 
-.sidenav.in {
+.modalDrawerSidenav.in {
   width: 50%;
 }
-.sidenav.out {
+.modalDrawerSidenav.out {
   width: 0;
-}
-
-.modalBackdrop {
-  z-index: 32;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-}
-
-.modalDisableBackgroundScroll{
-  overflow: hidden;
 }
 
 #modalDrawerPopupContent {
@@ -44,6 +31,30 @@
   opacity: 0;
 }
 
+.modalDisableBackgroundScroll{
+  overflow: hidden;
+}
+
+/*Scrollbar start*/
+
+.scroll::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.scroll::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.scroll::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+/*Scrollbar end*/
 
 .ml-4 {
   margin-left: 2rem;

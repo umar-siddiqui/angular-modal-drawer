@@ -39,7 +39,7 @@
           content.classList.remove("fadeOut");
 
           if(initOptions.backdrop){
-            var backdropElem = document.getElementById('angularModalDrawerBackdrop');
+            var backdropElem = document.getElementById('modalDrawerPopup');
             backdropElem.classList.add('modalBackdrop');
             if(initOptions.backdropClass){
               backdropElem.classList.add(initOptions.backdropClass);
@@ -67,7 +67,7 @@
           }
 
           if(initOptions.backdrop){
-            var backdropElem = document.getElementById('angularModalDrawerBackdrop');
+            var backdropElem = document.getElementById('modalDrawerPopup');
             backdropElem.classList.remove('modalBackdrop');
             if(initOptions.backdropClass){
               backdropElem.classList.remove(initOptions.backdropClass);
@@ -82,6 +82,11 @@
           if(initOptions.closeOnClickOutside){
             $document.unbind('click', clickHandler);
           }
+
+          if(initOptions.closeOnClickOutside){
+            $document.unbind('click', clickHandler);
+          }
+
           modalScope.$destroy();
         }
 
@@ -179,28 +184,27 @@
               content: tplAndVars[0],
             });
 
-            clickHandler = function(event) {
-              var modalDrawerPopupElem = angular.element(document.getElementById('modalDrawerPopup'));
-              var isClickedElementChildOfPopup = modalDrawerPopupElem
-                                                 .find(event.target)
-                                                 .length > 0;
+          clickHandler = function(event) {
+            var modalDrawerPopupElem = angular.element(document.getElementById('modalDrawerPopup'));
+            var isClickedElementChildOfPopup = modalDrawerPopupElem
+                                               .find(event.target)
+                                               .length > 0;
 
-              if(modalDrawerPopupElem.width() != 0 && !isClickedElementChildOfPopup) {
-                if(!modalScope.$onClickOutsidePanel){
-                  console.error(new Error('$onClickOutsidePanel not defined'));
-                }
-                modalScope.$onClickOutsidePanel();
+            if(modalDrawerPopupElem.width() != 0 && !isClickedElementChildOfPopup) {
+              if(!modalScope.$onClickOutsidePanel){
+                console.error(new Error('$onClickOutsidePanel not defined'));
               }
+              modalScope.$onClickOutsidePanel();
             }
+          }
 
-            // close panel when clicked outside
-            if(modalOptions.closeOnClickOutside){
+          // close panel when clicked outside
+          if(modalOptions.closeOnClickOutside){
+            // to ignore button click event fired to open the modal
+            $timeout(function() {
               $document.bind('click', clickHandler)
-            }
-
-          }, function resolveError(reason) {
-            modalResultDeferred.reject(reason);
-          });
+            });
+          }
 
           templateAndResolvePromise.then(function() {
             modalOpenedDeferred.resolve(true);
@@ -216,15 +220,14 @@
           var body = $document.find('body').eq(0);
           // check if element already exists
           var element = document.getElementById('modalDrawerPopup');
-          var backdropElem = document.getElementById('modalBackdrop');
-
+          var angularDomEl = undefined;
           // use existing modalDrawerPopup if it exists
           if(element){
-            var angularDomEl = angular.element(element);
-            var angularBackdropElem = angular.element(backdropElem);
+            angularDomEl = angular.element(element);
           }
           // create a new element otherwise
           else {
+            angularDomEl = angular.element('<div id="modalDrawerPopup" class="modalDrawerSidenav out scroll"></div>');
             angularDomEl.html('<div id="modalDrawerPopupContent" class="ml-4 mt-4 mr-4 mb-4 fadeOut"></div>')
           }
 
@@ -236,11 +239,11 @@
             body.append(modalDomEl);
           }
 
-          if(!backdropElem){
-            body.append(angularBackdropElem);
-          }
-
-          open();
+          // timeout here is to fix modal not sliding in
+          // smoothly on page load
+          $timeout(function(){
+            open();
+          })
         }
 
       }

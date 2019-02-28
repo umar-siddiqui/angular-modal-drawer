@@ -43,3 +43,21 @@
 #modalDrawerPopupContent.fadeOut {
   opacity: 0;
 }
+
+
+.ml-4 {
+  margin-left: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mr-4 {
+  margin-right: 2rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+

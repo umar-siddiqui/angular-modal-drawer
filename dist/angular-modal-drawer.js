@@ -225,10 +225,7 @@
           }
           // create a new element otherwise
           else {
-            var angularBackdropElem = angular.element('<div id="angularModalDrawerBackdrop"></div>');
-            var angularDomEl = angular.element('<div id="modalDrawerPopup" class="sidenav out"></div>');
-            angularDomEl.html('<div id="modalDrawerPopupContent" class="fadeOut"></div>');
-
+            angularDomEl.html('<div id="modalDrawerPopupContent" class="ml-4 mt-4 mr-4 mb-4 fadeOut"></div>')
           }
 
           angularDomEl.children().first().html(modal.content);
